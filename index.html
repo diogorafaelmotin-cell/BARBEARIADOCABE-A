@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>barbearia do cabeça</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --black: #0a0a0a;
+      --dark: #141414;
+      --gray: #1f1f1f;
+      --light-gray: #2a2a2a;
+      --border: #333;
+      --white: #f5f5f5;
+      --muted: #999;
+      --accent: #fff;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      line-height: 1.6;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Fundo Animado Roxa */
+    .purple-bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+
+    .purple-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.45;
+      animation: floatPurple 16s infinite ease-in-out alternate;
+    }
+
+    .purple-orb-1 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #8a2be2 0%, #4b0082 70%, transparent 100%);
+      top: -100px;
+      left: -100px;
+    }
+
+    .purple-orb-2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #9370db 0%, #6a0dad 70%, transparent 100%);
+      bottom: -150px;
+      right: -100px;
+      animation-delay: -5s;
+      animation-duration: 20s;
+    }
+
+    .purple-orb-3 {
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, #b19cd9 0%, #483d8b 70%, transparent 100%);
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -10s;
+      animation-duration: 18s;
+    }
+
+    @keyframes floatPurple {
+      0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+      }
+      33% {
+        transform: translate(120px, 80px) scale(1.2) rotate(120deg);
+      }
+      66% {
+        transform: translate(-80px, 150px) scale(0.8) rotate(240deg);
+      }
+      100% {
+        transform: translate(60px, -100px) scale(1.1) rotate(360deg);
+      }
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .logo span {
+      font-weight: 300;
+      color: var(--muted);
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--white);
+    }
+
+    /* Hero */
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 3rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--white);
+      color: var(--black);
+      padding: 0.9rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.9;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border);
+      margin-left: 0.75rem;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--white);
+      opacity: 1;
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-whatsapp:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-whatsapp svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .whatsapp-box {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .whatsapp-box p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    /* Services */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .service-card {
+      background: rgba(20, 20, 20, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .service-card:hover {
+      border-color: #7b2cbf;
+    }
+
+    .service-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .service-card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .service-price {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .service-time {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Booking */
+    .booking-section {
+      background: rgba(20, 20, 20, 0.75);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .booking-inner {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    .booking-inner .section-title {
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      background: var(--gray);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      color: var(--white);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #8a2be2;
+    }
+
+    /* Estilo para horários bloqueados */
+    .form-group option:disabled {
+      color: #666;
+      background-color: #121212;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .btn-full {
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 1rem;
+      font-size: 1.05rem;
+    }
+
+    /* Success message */
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      background: var(--gray);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .success-msg.show {
+      display: block;
+    }
+
+    .success-msg h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .success-msg p {
+      color: var(--muted);
+    }
+
+    /* How it works */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .step {
+      text-align: center;
+      padding: 1.5rem 1rem;
+    }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      background: var(--white);
+      color: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin: 0 auto 1rem;
+    }
+
+    .step h3 {
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      nav a {
+        margin-left: 1rem;
+        font-size: 0.9rem;
+      }
+
+      .btn-outline,
+      .btn-whatsapp {
+        margin-left: 0;
+        margin-top: 0.75rem;
+      }
+
+      .hero .btns {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Camada animada com luzes roxas flutuando pelo fundo -->
+  <div class="purple-bg-animation">
+    <div class="purple-orb purple-orb-1"></div>
+    <div class="purple-orb purple-orb-2"></div>
+    <div class="purple-orb purple-orb-3"></div>
+  </div>
+
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo">BARBEARIA <span>cabeça</span></a>
+      <nav>
+        <a href="#servicos">Serviços</a>
+        <a href="#agendar">Agendar</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>agende o seu corte de cabelo </h1>
+    <p>duvidas entre em contato</p>
+    <div class="btns">
+      <a href="#agendar" class="btn">Agendar agora</a>
+      <a href="https://wa.me/558187267680?text=oi, tenho duvidas." class="btn btn-whatsapp" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="servicos">
+    <h2 class="section-title">SERVIÇOS DISPONIVEIS</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>Corte de cabelo</h3>
+        <h3>sobrancelha </h3>
+        <h3>barba</h3>
+        <div class="service-time">serviços disponiveis</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="booking-section" id="agendar">
+    <div class="booking-inner">
+      <h2 class="section-title">Agendar horário</h2>
+
+      <form id="booking-form">
+        <div class="form-group">
+          <label for="nome">Seu nome</label>
+          <input type="text" id="nome" placeholder="confirme seu nome?" required>
+        </div>
+
+        <div class="form-group">
+          <label for="telefone">WhatsApp</label>
+          <input type="tel" id="telefone" placeholder="(41) xxxx-xxxx" required>
+        </div>
+
+        <div class="form-group">
+          <label for="servico">Serviço</label>
+          <select id="servico" required>
+            <option value="" disabled selected>Selecione o serviço</option>
+            <option value="Corte de cabelo — R$ 30">Corte cabelo — R$ 30</option>
+            <option value="Sobrancelha — R$ 15">Sobrancelha — R$ 15</option>
+            <option value="Barba — R$ 25">Barba — R$ 25</option>
+            <option value="Combo Cabelo + Barba — R$ 50">Combo Cabelo + Barba — R$ 50</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="data">Data</label>
+            <input type="date" id="data" required>
+          </div>
+          <div class="form-group">
+            <label for="horario">Horário</label>
+            <select id="horario" required>
+              <option value="" disabled selected>Escolha</option>
+              <option value="07:00">07:00</option>
+              <option value="08:30">08:30</option>
+              <option value="09:00">09:00</option>
+              <option value="10:30">10:30</option>
+              <option value="11:00">11:00</option>
+              <option value="11:30">11:30</option>
+              <option value="14:00">14:00</option>
+              <option value="14:30">14:30</option>
+              <option value="15:00">15:00</option>
+              <option value="15:30">15:30</option>
+              <option value="16:00">16:00</option>
+              <option value="16:30">16:30</option>
+              <option value="17:00">17:00</option>
+              <option value="17:30">17:30</option>
+              <option value="18:00">18:00</option>
+              <option value="19:00">19:00</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-full">Confirmar agendamento</button>
+      </form>
+
+      <div class="success-msg" id="success">
+        <h3>✓ Agendamento enviado!</h3>
+        <p>Em seu horario pode ir ao salão<br></p>
+      </div>
+
+      <div class="whatsapp-box">
+        <p>tem duvidas? entre em contato.</p>
+        <a href="https://wa.me/558187267680?text=oi,tenho duvidas." class="btn btn-whatsapp" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chamar no WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Barbearia cabeça</p>
+    <p style="margin-top:0.75rem;">
+      <a href="https://wa.me/558187267680?text=oi, tenho duvidas." target="_blank" rel="noopener">WhatsApp: (81) 8726-7680</a>
+    </p>
+    <p style="margin-top:0.5rem;font-size:0.8rem;">escolha seu melhor horario</p>
+  </footer>
+
+  <script>
+    // Função para obter a data e hora atual no Horário de Brasília
+    function obterDataHoraBrasilia() {
+      const agora = new Date();
+      // Formata a data e hora para o fuso de Brasília
+      const optionsDate = { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' };
+      const optionsTime = { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit', hour12: false };
+      
+      const partsDate = new Intl.DateTimeFormat('pt-BR', optionsDate).formatToParts(agora);
+      const dia = partsDate.find(p => p.type === 'day').value;
+      const mes = partsDate.find(p => p.type === 'month').value;
+      const ano = partsDate.find(p => p.type === 'year').value;
+      
+      const dataISO = `${ano}-${mes}-${dia}`;
+      
+      const partesHora = new Intl.DateTimeFormat('pt-BR', optionsTime).formatToParts(agora);
+      const hora = partesHora.find(p => p.type === 'hour').value;
+      const minuto = partesHora.find(p => p.type === 'minute').value;
+      
+      const horaAtualStr = `${hora}:${minuto}`;
+
+      return { dataISO, horaAtualStr };
+    }
+
+    const { dataISO: hojeBrasilia, horaAtualStr } = obterDataHoraBrasilia();
+    const inputData = document.getElementById('data');
+    const selectHorario = document.getElementById('horario');
+    
+    // Define a data mínima no calendário como hoje (Brasília)
+    inputData.min = hojeBrasilia;
+
+    // Se o usuário abrir o site sem escolher a data, define hoje por padrão
+    if (!inputData.value) {
+      inputData.value = hojeBrasilia;
+    }
+
+    // Busca agendamentos do localStorage
+    function obterAgendamentos() {
+      const dados = localStorage.getItem('barbearia_agendamentos');
+      return dados ? JSON.parse(dados) : [];
+    }
+
+    // Atualiza horários disponíveis baseados na data, ocupação e horário de Brasília
+    function atualizarHorariosDisponiveis() {
+      const dataSelecionada = inputData.value;
+      const agendamentos = obterAgendamentos();
+
+      // Filtra os horários que já foram agendados no dia
+      const horariosOcupados = agendamentos
+        .filter(ag => ag.data === dataSelecionada)
+        .map(ag => ag.horario);
+
+      const eHoje = (dataSelecionada === hojeBrasilia);
+
+      Array.from(selectHorario.options).forEach(opt => {
+        if (opt.value === "") return;
+
+        const horaBase = opt.value;
+        let deveDesativar = false;
+        let motivo = "";
+
+        // 1. Verifica se já passou do horário atual (apenas se a data selecionada for hoje em Brasília)
+        if (eHoje) {
+          if (horaBase <= horaAtualStr) {
+            deveDesativar = true;
+            motivo = "Passado";
+          }
+        }
+
+        // 2. Verifica se o horário já foi reservado por alguém
+        if (horariosOcupados.includes(horaBase)) {
+          deveDesativar = true;
+          motivo = "Ocupado";
+        }
+
+        if (deveDesativar) {
+          opt.disabled = true;
+          opt.style.display = 'none'; // Some completamente com o horário que já passou ou foi pego
+          opt.textContent = `${horaBase} (${motivo === "Ocupado" ? "Ocupado" : "Indisponível"})`;
+        } else {
+          opt.disabled = false;
+          opt.style.display = 'block'; // Mostra se estiver livre e válido
+          opt.textContent = horaBase;
+        }
+      });
+
+      // Se a opção selecionada ficou indisponível, reseta o select
+      if (selectHorario.selectedOptions[0] && selectHorario.selectedOptions[0].disabled) {
+        selectHorario.value = "";
+      }
+    }
+
+    // Atualiza opções quando mudar a data
+    inputData.addEventListener('change', atualizarHorariosDisponiveis);
+
+    // Executa ao carregar a página
+    atualizarHorariosDisponiveis();
+
+    // Envio do formulário com dupla checagem de segurança
+    document.getElementById('booking-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+      const servico = document.getElementById('servico').value;
+      const data = inputData.value;
+      const horario = selectHorario.value;
+
+      if (!horario) {
+        alert('Por favor, selecione um horário válido.');
+        return;
+      }
+
+      const agendamentos = obterAgendamentos();
+
+      // Checagem de segurança: impede que duas pessoas peguem o mesmo horário simultaneamente
+      const jaExiste = agendamentos.some(ag => ag.data === data && ag.horario === horario);
+      if (jaExiste) {
+        alert('Este horário acabou de ser reservado por outra pessoa! Escolha outro.');
+        atualizarHorariosDisponiveis();
+        return;
+      }
+
+      // Salva o novo agendamento
+      agendamentos.push({ nome, telefone, servico, data, horario });
+      localStorage.setItem('barbearia_agendamentos', JSON.stringify(agendamentos));
+
+      // Exibe mensagem de sucesso
+      this.style.display = 'none';
+      document.getElementById('success').classList.add('show');
+    });
+  </script>
+</body>
+</html>
