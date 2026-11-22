@@ -568,6 +568,21 @@
     <p style="margin-top:0.5rem;font-size:0.8rem;">escolha seu melhor horario</p>
   </footer>
 
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCMENPyDE9yZqQF1tcxpFO1HqLt0SKYtmg",
+  authDomain: "barbearia-cabeca-dfdae.firebaseapp.com",
+  databaseURL: "https://barbearia-cabeca-dfdae-default-rtdb.firebaseio.com",
+  projectId: "barbearia-cabeca-dfdae",
+  storageBucket: "barbearia-cabeca-dfdae.firebasestorage.app",
+  messagingSenderId: "902397873179",
+  appId: "1:902397873179:web:90edd18ccfe23af4507cbe",
+  measurementId: "G-D9C8TK31B4"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
   <script>
     // Função para obter a data e hora atual no Horário de Brasília
     function obterDataHoraBrasilia() {
@@ -604,13 +619,19 @@
       inputData.value = hojeBrasilia;
     }
 
-    // Busca agendamentos do localStorage
-    function obterAgendamentos() {
-      const dados = localStorage.getItem('barbearia_agendamentos');
-      return dados ? JSON.parse(dados) : [];
-    }
-
-    // Atualiza horários disponíveis baseados na data, ocupação e horário de Brasília
+    // Busca agendamentos do Firebase
+let agendamentosCache = [];
+function obterAgendamentos() {
+return agendamentosCache;
+}
+db.ref('agendamentos').on('value', (snapshot) => {
+const dados = snapshot.val();
+agendamentosCache = dados ? Object.values(dados) : [];
+if (typeof atualizarHorariosDisponiveis === 'function') {
+atualizarHorariosDisponiveis();
+}
+});
+  // Atualiza horários disponíveis baseados na data, ocupação e horário de Brasília
     function atualizarHorariosDisponiveis() {
       const dataSelecionada = inputData.value;
       const agendamentos = obterAgendamentos();
@@ -691,10 +712,9 @@
         return;
       }
 
-      // Salva o novo agendamento
-      agendamentos.push({ nome, telefone, servico, data, horario });
-      localStorage.setItem('barbearia_agendamentos', JSON.stringify(agendamentos));
-
+   // Salva o novo agendamento no Firebase
+db.ref('agendamentos').push({ nome, telefone, servico, data, horario });
+      
       // Exibe mensagem de sucesso
       this.style.display = 'none';
       document.getElementById('success').classList.add('show');
