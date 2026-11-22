@@ -650,6 +650,7 @@
   <div id="toast"></div>
 
   <script>
+    var agendamentosCache=[];
     const SENHA_CORRETA = "1234"; // Altere sua senha aqui
     const STORAGE_KEY = "barbearia_agendamentos";
     let indiceParaExcluir = null;
@@ -699,9 +700,8 @@ appId: "1:1063544666014:web:b5b6cb9ab0f8dccb6eeaf4c"
 if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 const db = firebase.database();
 
-let agendamentosCache = [];
 function obterAgendamentos() {
-return agendamentosCache;
+return agendamentosCache || [];
 }
 function salvarAgendamentos(lista) {
 db.ref('agendamentos').set(lista);
