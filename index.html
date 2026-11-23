@@ -107,7 +107,7 @@
     .hero {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 4rem 1.5rem 3rem;
+      padding: 3rem 1.5rem 2rem;
       text-align: center;
     }
 
@@ -121,6 +121,54 @@
       font-size: 1.15rem;
       color: var(--muted);
       margin-bottom: 2rem;
+    }
+
+    /* Card de Destaque do Plano Mensal */
+    .plan-highlight-section {
+      max-width: 560px;
+      margin: 0 auto 2.5rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .plan-card {
+      background: linear-gradient(135deg, rgba(138, 43, 226, 0.25) 0%, rgba(20, 20, 20, 0.9) 100%);
+      border: 1px solid var(--purple);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(138, 43, 226, 0.2);
+    }
+
+    .plan-card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .plan-card .price {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #d8b4fe;
+      margin: 0.75rem 0;
+    }
+
+    .plan-card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .plan-card ul {
+      list-style: none;
+      margin-bottom: 1.5rem;
+      text-align: left;
+      display: inline-block;
+    }
+
+    .plan-card ul li {
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      color: var(--white);
     }
 
     .booking-section {
@@ -188,10 +236,17 @@
       border: none;
       cursor: pointer;
       width: 100%;
+      text-align: center;
+      text-decoration: none;
     }
 
     .btn:hover {
       opacity: 0.9;
+    }
+
+    .btn-purple {
+      background: var(--purple);
+      color: var(--white);
     }
 
     .success-msg {
@@ -230,12 +285,28 @@
 
   <section class="hero">
     <h1>Agende o seu corte de cabelo</h1>
-    <p>Escolha seu melhor horário ou assine o plano mensal</p>
+    <p>Escolha seu horário ou aproveite nosso plano exclusivo</p>
   </section>
 
+  <!-- SEÇÃO EM DESTAQUE DO PLANO MENSAL -->
+  <section class="plan-highlight-section">
+    <div class="plan-card">
+      <h3>⭐ Plano Mensal</h3>
+      <div class="price">R$ 85,00</div>
+      <p>Economize e mantenha o visual sempre em dia!</p>
+      <ul style="text-align: left; display: inline-block; margin-bottom: 1.5rem;">
+        <li>✓ <strong>4 Cortes de Cabelo</strong> por mês</li>
+        <li>✓ Atendimento preferencial</li>
+        <li>✓ Controle direto pelo painel</li>
+      </ul>
+      <a href="#agendar" class="btn btn-purple" onclick="selecionarPlanoNoForm()">Quero Assinar o Plano</a>
+    </div>
+  </section>
+
+  <!-- SEÇÃO DE AGENDAMENTO (Cortes Avulsos / Seleção) -->
   <section class="booking-section" id="agendar">
     <div class="booking-inner">
-      <h2 class="section-title">Agendar Horário / Assinar Plano</h2>
+      <h2 class="section-title">Agendar Horário / Serviço</h2>
 
       <form id="booking-form">
         <div class="form-group">
@@ -249,9 +320,9 @@
         </div>
 
         <div class="form-group">
-          <label for="servico">Serviço / Plano</label>
+          <label for="servico">Serviço</label>
           <select id="servico" required>
-            <option value="" disabled selected>Selecione o serviço ou plano</option>
+            <option value="" disabled selected>Selecione o serviço</option>
             <option value="Plano Mensal (4 cortes) — R$ 85">⭐ Plano Mensal (4 cortes) — R$ 85</option>
             <option value="Corte de cabelo — R$ 30">Corte de cabelo — R$ 30</option>
             <option value="Sobrancelha — R$ 10">Sobrancelha — R$ 10</option>
@@ -292,8 +363,8 @@
       </form>
 
       <div class="success-msg" id="success">
-        <h3>✓ Agendamento enviado!</h3>
-        <p>No seu horário, pode comparecer ao salão.</p>
+        <h3>✓ Solicitação enviada!</h3>
+        <p>Agradecemos a preferência. Compareça no horário escolhido.</p>
       </div>
     </div>
   </section>
@@ -320,6 +391,11 @@
       firebase.initializeApp(firebaseConfig);
     }
     const db = firebase.database();
+
+    function selecionarPlanoNoForm() {
+      const selectServico = document.getElementById('servico');
+      selectServico.value = "Plano Mensal (4 cortes) — R$ 85";
+    }
 
     function obterDataHoraBrasilia() {
       const agora = new Date();
