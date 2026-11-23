@@ -187,6 +187,41 @@
       padding: 2rem 1.5rem;
     }
 
+    /* Abas de Navegação do Painel */
+    .tab-navigation {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+
+    .tab-btn {
+      background: var(--gray);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: var(--white);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
     .btn {
       background: var(--white);
       color: var(--black);
@@ -507,79 +542,125 @@
           <span class="badge-admin">Painel Admin</span>
         </div>
         <div class="header-actions">
-          <button class="btn btn-purple" onclick="abrirModalNovo()">+ Novo Horário</button>
+          <button class="btn btn-purple" onclick="abrirModalNovo()">+ Novo Agendamento</button>
           <button class="btn btn-outline" onclick="sair()">Sair</button>
         </div>
       </div>
     </header>
 
     <main class="container">
-      <section class="stats-grid">
-        <div class="stat-card highlight">
-          <span>Cortes Hoje</span>
-          <strong id="stat-hoje">0</strong>
-        </div>
-        <div class="stat-card">
-          <span>Total Agendado</span>
-          <strong id="stat-total">0</strong>
-        </div>
-        <div class="stat-card">
-          <span>Faturamento Previsto (Filtro)</span>
-          <strong id="stat-faturamento">R$ 0,00</strong>
-        </div>
-      </section>
 
-      <section class="toolbar">
-        <div class="filters">
-          <input type="date" id="filtro-data" title="Filtrar por dia">
-          <input type="text" id="filtro-busca" class="search-input" placeholder="Buscar por nome ou serviço...">
-          <button class="btn btn-outline btn-sm" onclick="filtrarHoje()">Hoje</button>
-          <button class="btn btn-outline btn-sm" onclick="limparFiltros()">Ver Todos</button>
-        </div>
-        <div style="font-size: 0.85rem; color: var(--muted);">
-          Atualização automática ativa
-        </div>
-      </section>
+      <!-- ABAS DE NAVEGAÇÃO -->
+      <div class="tab-navigation">
+        <button class="tab-btn active" onclick="mudarAba('agendamentos', this)">📅 Todos Agendamentos</button>
+        <button class="tab-btn" onclick="mudarAba('mensais', this)">⭐ Planos Mensais Ativos</button>
+      </div>
 
-      <section class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Horário</th>
-              <th>Cliente</th>
-              <th>WhatsApp</th>
-              <th>Trabalho / Serviço</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="tabela-corpo">
-            <!-- Preenchido via JS -->
-          </tbody>
-        </table>
-        <div id="empty-state" class="empty-state" style="display: none;">
-          <p>Nenhum agendamento encontrado para este filtro.</p>
-        </div>
-      </section>
+      <!-- ABA 1: TODOS OS AGENDAMENTOS -->
+      <div id="aba-agendamentos" class="tab-content active">
+        <section class="stats-grid">
+          <div class="stat-card highlight">
+            <span>Cortes Hoje</span>
+            <strong id="stat-hoje">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Total Agendado</span>
+            <strong id="stat-total">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Faturamento Previsto (Filtro)</span>
+            <strong id="stat-faturamento">R$ 0,00</strong>
+          </div>
+        </section>
+
+        <section class="toolbar">
+          <div class="filters">
+            <input type="date" id="filtro-data" title="Filtrar por dia">
+            <input type="text" id="filtro-busca" class="search-input" placeholder="Buscar por nome ou serviço...">
+            <button class="btn btn-outline btn-sm" onclick="filtrarHoje()">Hoje</button>
+            <button class="btn btn-outline btn-sm" onclick="limparFiltros()">Ver Todos</button>
+          </div>
+          <div style="font-size: 0.85rem; color: var(--muted);">
+            Atualização automática ativa
+          </div>
+        </section>
+
+        <section class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Cliente</th>
+                <th>WhatsApp</th>
+                <th>Trabalho / Serviço</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-corpo">
+              <!-- Preenchido via JS -->
+            </tbody>
+          </table>
+          <div id="empty-state" class="empty-state" style="display: none;">
+            <p>Nenhum agendamento encontrado para este filtro.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- ABA 2: PLANOS MENSAIS -->
+      <div id="aba-mensais" class="tab-content">
+        <section class="stats-grid">
+          <div class="stat-card highlight">
+            <span>Total de Assinantes Mensais</span>
+            <strong id="stat-total-mensal">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Faturamento Mensal (Planos)</span>
+            <strong id="stat-faturamento-mensal">R$ 0,00</strong>
+          </div>
+        </section>
+
+        <section class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Data da Assinatura</th>
+                <th>Cliente</th>
+                <th>WhatsApp</th>
+                <th>Validade / Vencimento (30 dias)</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-mensais-corpo">
+              <!-- Preenchido via JS -->
+            </tbody>
+          </table>
+          <div id="empty-state-mensal" class="empty-state" style="display: none;">
+            <p>Nenhum cliente cadastrado no plano mensal no momento.</p>
+          </div>
+        </section>
+      </div>
+
     </main>
   </div>
 
-  <!-- MODAL: AGENDAMENTO MANUAL PELO BARBEIRO -->
+  <!-- MODAL: AGENDAMENTO MANUAL / PLANO -->
   <div class="modal-overlay" id="modal-novo">
     <div class="modal-card">
-      <h3>Bloquear / Agendar Cliente</h3>
+      <h3>Novo Agendamento / Plano</h3>
       <form id="form-manual">
         <div class="form-group">
           <label>Nome do Cliente</label>
-          <input type="text" id="manual-nome" placeholder="Ex: João Silva (ou Bloqueio)" required>
+          <input type="text" id="manual-nome" placeholder="Ex: João Silva" required>
         </div>
         <div class="form-group">
           <label>WhatsApp</label>
           <input type="tel" id="manual-tel" placeholder="(81) 99999-9999" required>
         </div>
         <div class="form-group">
-          <label>Trabalho / Serviço</label>
+          <label>Trabalho / Serviço / Plano</label>
           <select id="manual-servico" required>
+            <option value="Plano Mensal (4 cortes) — R$ 85">⭐ Plano Mensal (4 cortes) — R$ 85</option>
             <option value="Corte de cabelo — R$ 30">Corte de cabelo — R$ 30</option>
             <option value="Sobrancelha — R$ 10">Sobrancelha — R$ 10</option>
             <option value="Barba — R$ 25">Barba — R$ 25</option>
@@ -614,7 +695,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" onclick="fecharModalNovo()">Cancelar</button>
-          <button type="submit" class="btn btn-purple">Salvar Horário</button>
+          <button type="submit" class="btn btn-purple">Salvar</button>
         </div>
       </form>
     </div>
@@ -623,13 +704,13 @@
   <!-- MODAL: CONFIRMAR EXCLUSÃO -->
   <div class="modal-overlay" id="modal-excluir">
     <div class="modal-card">
-      <h3>Liberar Horário?</h3>
+      <h3>Remover Registro?</h3>
       <p style="color: var(--muted); font-size: 0.95rem;" id="texto-excluir">
-        Deseja cancelar este agendamento? O horário voltará a ficar disponível no site.
+        Deseja remover este registro?
       </p>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="fecharModalExcluir()">Voltar</button>
-        <button class="btn btn-danger" id="btn-confirmar-exclusao">Sim, Liberar Horário</button>
+        <button class="btn btn-danger" id="btn-confirmar-exclusao">Sim, Remover</button>
       </div>
     </div>
   </div>
@@ -665,6 +746,7 @@
       loginScreen.style.display = "none";
       adminPanel.style.display = "block";
       renderizarTabela();
+      renderizarTabelaMensais();
     }
 
     function sair() {
@@ -672,7 +754,15 @@
       location.reload();
     }
 
-    // Configuração do Firebase idêntica à do site (barbearia-cabeca-dfdae)
+    function mudarAba(abaId, btnElement) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+      document.getElementById('aba-' + abaId).classList.add('active');
+      btnElement.classList.add('active');
+    }
+
+    // Configuração do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCMENPyDE9yZqQF1tcxpFO1HqLt0SKYtmg",
       authDomain: "barbearia-cabeca-dfdae.firebaseapp.com",
@@ -692,7 +782,7 @@
       return agendamentosCache || [];
     }
 
-    // Leitura em tempo real lendo as chaves do push() do site
+    // Leitura em tempo real do Firebase
     db.ref('agendamentos').on('value', (snapshot) => {
       const dados = snapshot.val();
       if (!dados) {
@@ -704,6 +794,7 @@
         }));
       }
       renderizarTabela();
+      renderizarTabelaMensais();
     });
 
     function formatarDataBR(dataISO) {
@@ -712,11 +803,25 @@
       return `${dia}/${mes}/${ano}`;
     }
 
+    function calcularValidade(dataISO) {
+      if (!dataISO) return "";
+      const partes = dataISO.split("-");
+      const dataAssinatura = new Date(partes[0], partes[1] - 1, partes[2]);
+      dataAssinatura.setDate(dataAssinatura.getDate() + 30); // Adiciona 30 dias de duração
+
+      const dia = String(dataAssinatura.getDate()).padStart(2, '0');
+      const mes = String(dataAssinatura.getMonth() + 1).padStart(2, '0');
+      const ano = dataAssinatura.getFullYear();
+
+      return `${dia}/${mes}/${ano}`;
+    }
+
     function extrairValorServico(textoServico) {
       const match = textoServico.match(/R\$\s*(\d+)/);
       return match ? parseFloat(match[1]) : 0;
     }
 
+    // Renderiza a tabela principal de agendamentos
     function renderizarTabela() {
       const todos = obterAgendamentos();
       const hojeISO = new Date().toISOString().split("T")[0];
@@ -785,6 +890,58 @@
       });
     }
 
+    // Renderiza a aba exclusiva de Planos Mensais
+    function renderizarTabelaMensais() {
+      const todos = obterAgendamentos();
+      const apenasMensais = todos.filter(ag => ag.servico && ag.servico.includes("Plano Mensal"));
+
+      const faturamentoMensal = apenasMensais.reduce((acc, ag) => acc + extrairValorServico(ag.servico), 0);
+
+      document.getElementById("stat-total-mensal").textContent = apenasMensais.length;
+      document.getElementById("stat-faturamento-mensal").textContent = faturamentoMensal.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+
+      const tbody = document.getElementById("tabela-mensais-corpo");
+      const emptyState = document.getElementById("empty-state-mensal");
+      tbody.innerHTML = "";
+
+      if (apenasMensais.length === 0) {
+        emptyState.style.display = "block";
+        return;
+      }
+
+      emptyState.style.display = "none";
+
+      apenasMensais.forEach(ag => {
+        const telLimpo = ag.telefone.replace(/\D/g, "");
+        const validadeStr = calcularValidade(ag.data);
+        const msgZap = encodeURIComponent(
+          `Fala ${ag.nome}! Passando para lembrar que seu Plano Mensal na Barbearia do Cabeça vence em ${validadeStr}. Vamos agendar seu corte?`
+        );
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${formatarDataBR(ag.data)}</strong></td>
+          <td><strong>${ag.nome}</strong></td>
+          <td>${ag.telefone}</td>
+          <td><span class="time-pill" style="background: rgba(37, 211, 102, 0.15); border-color: rgba(37, 211, 102, 0.4); color: #86efac;">Vence em: ${validadeStr}</span></td>
+          <td>
+            <div class="actions-cell">
+              <a href="https://wa.me/55${telLimpo}?text=${msgZap}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm">
+                Cobrar / Avisar
+              </a>
+              <button class="btn btn-danger btn-sm" onclick="pedirExclusao('${ag.id}', '${ag.nome}', 'Plano Mensal')">
+                Remover Plano
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
     document.getElementById("filtro-data").addEventListener("change", renderizarTabela);
     document.getElementById("filtro-busca").addEventListener("input", renderizarTabela);
 
@@ -827,13 +984,13 @@
 
       db.ref('agendamentos').push({ nome, telefone, servico, data, horario });
       fecharModalNovo();
-      mostrarToast("Horário agendado e bloqueado no site!");
+      mostrarToast("Salvo com sucesso no banco de dados!");
     });
 
     function pedirExclusao(id, nome, horario) {
       idParaExcluir = id;
       document.getElementById("texto-excluir").textContent =
-        `Deseja remover o agendamento de ${nome} às ${horario}? O horário voltará a ficar livre no site.`;
+        `Deseja remover o registro de ${nome} (${horario})?`;
       document.getElementById("modal-excluir").classList.add("active");
     }
 
@@ -846,7 +1003,7 @@
       if (idParaExcluir !== null) {
         db.ref('agendamentos/' + idParaExcluir).remove().then(() => {
           fecharModalExcluir();
-          mostrarToast("Horário liberado com sucesso!");
+          mostrarToast("Removido com sucesso!");
         });
       }
     });
