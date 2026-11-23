@@ -230,12 +230,12 @@
 
   <section class="hero">
     <h1>Agende o seu corte de cabelo</h1>
-    <p>Escolha seu melhor horário</p>
+    <p>Escolha seu melhor horário ou assine o plano mensal</p>
   </section>
 
   <section class="booking-section" id="agendar">
     <div class="booking-inner">
-      <h2 class="section-title">Agendar Horário</h2>
+      <h2 class="section-title">Agendar Horário / Assinar Plano</h2>
 
       <form id="booking-form">
         <div class="form-group">
@@ -249,9 +249,10 @@
         </div>
 
         <div class="form-group">
-          <label for="servico">Serviço</label>
+          <label for="servico">Serviço / Plano</label>
           <select id="servico" required>
-            <option value="" disabled selected>Selecione o serviço</option>
+            <option value="" disabled selected>Selecione o serviço ou plano</option>
+            <option value="Plano Mensal (4 cortes) — R$ 85">⭐ Plano Mensal (4 cortes) — R$ 85</option>
             <option value="Corte de cabelo — R$ 30">Corte de cabelo — R$ 30</option>
             <option value="Sobrancelha — R$ 10">Sobrancelha — R$ 10</option>
             <option value="Barba — R$ 25">Barba — R$ 25</option>
@@ -301,11 +302,10 @@
     <p>Barbearia Cabeça</p>
   </footer>
 
-  <!-- Scripts do Firebase Compat (Idênticos aos do Painel) -->
+  <!-- Scripts do Firebase Compat -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script>
-    // Configuração exata do mesmo projeto do Painel (barbeariadocabe-a)
     const firebaseConfig = {
       apiKey: "AIzaSyCMENPyDE9yZqQF1tcxpFO1HqLt0SKYtmg",
       authDomain: "barbearia-cabeca-dfdae.firebaseapp.com",
@@ -321,7 +321,6 @@
     }
     const db = firebase.database();
 
-    // Função para obter data/hora atual em Brasília
     function obterDataHoraBrasilia() {
       const agora = new Date();
       const optionsDate = { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -392,7 +391,6 @@
 
     inputData.addEventListener('change', atualizarHorariosDisponiveis);
 
-    // Envio do formulário salvando no Firebase
     document.getElementById('booking-form').addEventListener('submit', function(e) {
       e.preventDefault();
 
@@ -414,7 +412,6 @@
         return;
       }
 
-      // Salva no Realtime Database do mesmo projeto do painel
       db.ref('agendamentos').push({ nome, telefone, servico, data, horario });
       
       this.style.display = 'none';
