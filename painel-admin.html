@@ -505,29 +505,6 @@
       font-size: 1.25rem;
     }
 
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 0.35rem;
-    }
-
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      background: var(--gray);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.75rem;
-      color: var(--white);
-      font-size: 0.95rem;
-      outline: none;
-    }
-
     .modal-footer {
       display: flex;
       justify-content: flex-end;
@@ -666,7 +643,7 @@
           </section>
         </div>
 
-        <!-- ABA 2: PLANOS MENSAIS (Clientes que assinaram sem horário fixo) -->
+        <!-- ABA 2: PLANOS MENSAIS (Apenas assinaturas sem horário fixo) -->
         <div id="aba-mensais" class="tab-content">
           <section class="stats-grid">
             <div class="stat-card highlight">
@@ -829,11 +806,11 @@
     function renderizarTabelas() {
       const todos = agendamentosCache || [];
 
-      // Separa o que é agendamento comum do que é plano mensal
-      const agendamentosComuns = todos.filter(ag => !ag.servico || !ag.servico.includes("Plano Mensal"));
-      const apenasMensais = todos.filter(ag => ag.servico && ag.servico.includes("Plano Mensal"));
+      // SEPARAÇÃO RIGOROSA: Agendamentos comuns (têm horário diferente de "Plano") vs Planos Mensais
+      const agendamentosComuns = todos.filter(ag => ag.horario !== "Plano" && (!ag.servico || !ag.servico.includes("Plano Mensal")));
+      const apenasMensais = todos.filter(ag => ag.horario === "Plano" || (ag.servico && ag.servico.includes("Plano Mensal")));
 
-      // --- RENDERIZA ABA 1: AGENDAMENTOS ---
+      // --- RENDERIZA ABA 1: AGENDAMENTOS COMUNS ---
       const hojeISO = new Date().toISOString().split("T")[0];
       const filtroData = document.getElementById("filtro-data").value;
       const filtroBusca = document.getElementById("filtro-busca").value.toLowerCase();
